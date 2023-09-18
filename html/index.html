@@ -20,16 +20,38 @@
 <iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
 <script src="../javascript/route.js"></script>
 <script src="../javascript/fuelPricing.js"></script>
-<script src="../javascript/vehicle.js"></script>
 <script>
       let source = -1;
       let dest = -1;
       let evRouteDist = 0;
       let allRoutes = [];
       let routeLine = -1;
+      let evType = undefined;
+      let gasType = undefined;
 
       function toMMSS(duration) {
         return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
+      }
+
+      /**
+       * Resets the stored routes within the application.
+       */
+      function reset() {
+        allRoutes = [];
+        source = -1;
+        dest = -1;
+        routeline = -1;
+        evRouteDist = 0;
+        evType = undefined;
+        gasType = undefined;
+
+        //Clear the map
+        mapObjects = map.getObjects();
+        for (idx in mapObjects) {
+          map.removeObject(mapObjects[idx]);
+        }
+
+        //Update Display
       }
 
       /**
@@ -114,6 +136,7 @@
         dest = -1;
         routeLine = -1;
         evRouteDist = 0;
+        reset();
       }
 
 
