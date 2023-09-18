@@ -7,12 +7,14 @@ class Route {
      * @param {*} routeLine map objects representing route
      * @param {*} dist distance of route in mi
      */
-    constructor(source, dest, routeLine, dist, evCost, gasCost) {
-        self.source = source;
-        self.dest = dest;
-        self.routeLine = routeLine;
-        self.dist = dist;
-        self.evCost = evCost;
-        self.gasCost = gasCost;
+    constructor(source, dest, routeLine, dist, evCost, gasCost, evEmissions, gasEmissions) {
+        this.source = source;
+        this.dest = dest;
+        this.routeLine = routeLine;
+        this.dist = dist;
+        this.evCost = evCost;
+        this.gasCost = gasCost;
+        this.evEmissions = evEmissions;
+        this.gasEmissions = gasEmissions;
     }
 }

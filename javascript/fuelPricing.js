@@ -7,18 +7,42 @@ const milesPerChargeCar = 405;
 const milesPerChargeVan = 348;
 const chargePrice = 14;
 
+//Average CO2 emissions in kg per mile according to 8billiontrees.com
+const carEmissionsPerMile = .404;
+const vanEmissionsPerMile = .485;
+
+//Average CO2 upstream emissions (from electricity production) according to 8billiontrees.com
+const evCarEmissions = .085;
+const evVanEmissions = .102;
+
 function calculateRouteCosts(evType, gasType, distance) {
     if (evType == "Car") {
-        evCost = (distance / milesPerChargeCar) * chargePrice;
+        var evCost = (distance / milesPerChargeCar) * chargePrice;
     } else {
-        evCost = (distance / milesPerChargeVan) * chargePrice;
+        var evCost = (distance / milesPerChargeVan) * chargePrice;
     }
 
     if (gasType == "Car") {
-        gasCost = (distance / carGasMPG) * gallonPrice;
+        var gasCost = (distance / carGasMPG) * gallonPrice;
     } else {
-        gasCost = (distance / vanGasMPG) * gallonPrice;
+        var gasCost = (distance / vanGasMPG) * gallonPrice;
     }
 
     return [evCost, gasCost];
+};
+
+function calculateEmissions(evType, gasType, distance) {
+    if (evType == "Car") {
+        var evEmissions = distance * evCarEmissions;
+    } else {
+        var evEmissions = distance * evVanEmissions;
+    }
+
+    if (gasType == "Car") {
+        var gasEmissions = distance * carEmissionsPerMile;
+    } else {
+        var gasEmissions = distance * vanEmissionsPerMile;
+    }
+
+    return [evEmissions, gasEmissions];
 }

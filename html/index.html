@@ -18,9 +18,9 @@
 <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
 
 <iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
-<script src="route.js"></script>
-<script src="emissions.js"></script>
-<script src="fuelPricing.js"></script>
+<script src="../javascript/route.js"></script>
+<script src="../javascript/fuelPricing.js"></script>
+<script src="../javascript/vehicle.js"></script>
 <script>
       let source = -1;
       let dest = -1;
@@ -97,12 +97,16 @@
       function logRoute() {
         //Route has been completed, add source, dest to routes, figure out emissions, and figure out gas costs
         costs = calculateRouteCosts("Car", "Car", evRouteDist);
-        evCost = costs[0]
-        gasCost = costs[1]
-
+        var evCost = costs[0];
+        var gasCost = costs[1];
         
+        emissions = calculateEmissions("Car", "Car", evRouteDist);
+        var evEmissions = emissions[0];
+        var gasEmissions = emissions[1];
+      
 
-        currRoute = new Route(source, dest, routeLine, evRouteDist, evCost, gasCost);
+        currRoute = new Route(source, dest, routeLine, evRouteDist, evCost, gasCost, evEmissions, gasEmissions);
+
         allRoutes.push(currRoute);
 
         //Reset Route Settings
