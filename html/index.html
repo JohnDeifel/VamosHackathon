@@ -17,14 +17,16 @@
 <!-- Step 4: Create a div for the Map -->
 <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
 
-      <iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
-
-
+<iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
+<script src="route.js"></script>
+<script src="emissions.js"></script>
+<script src="fuelPricing.js"></script>
 <script>
       let source = -1;
       let dest = -1;
-      let evRouteDist = -1;
-      let routes = []
+      let evRouteDist = 0;
+      let allRoutes = [];
+      let routeLine = -1;
 
       function toMMSS(duration) {
         return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
@@ -87,8 +89,27 @@
           }, false);
 
           // Add the maneuvers group to the map
+          routeLine = group;
           map.addObject(group);
         });
+      }
+
+      function logRoute() {
+        //Route has been completed, add source, dest to routes, figure out emissions, and figure out gas costs
+        costs = calculateRouteCosts("Car", "Car", evRouteDist);
+        evCost = costs[0]
+        gasCost = costs[1]
+
+        
+
+        currRoute = new Route(source, dest, routeLine, evRouteDist, evCost, gasCost);
+        allRoutes.push(currRoute);
+
+        //Reset Route Settings
+        source = -1;
+        dest = -1;
+        routeLine = -1;
+        evRouteDist = 0;
       }
 
 
@@ -97,7 +118,6 @@
         // ensure that at least one route was found
         if (result.routes.length) {
           routeDist = 0
-
           result.routes[0].sections.forEach((section) => {
               routeDist += section.spans[0]['length'];
 
@@ -124,8 +144,8 @@
               // Set the map's viewport to make the whole route visible:
               map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
           });
-          evRouteDist = routeDist;
-
+          evRouteDist = routeDist/1609.344;
+          logRoute();
         }
       };
 
@@ -172,10 +192,6 @@
           function(error) {
             alert(error.message);
           });
-        
-        //Route has been completed, add source, dest to routes, figure out emissions, and figure out gas costs
-        
-        
       }
       
       function setUpClickListener(map) {
@@ -184,7 +200,6 @@
         map.addEventListener('tap', function (evt) {
           var coord = map.screenToGeo(evt.currentPointer.viewportX,
                   evt.currentPointer.viewportY);
-
           if (source == -1) {
             source = coord;
             var sourceMarker = new H.map.Marker(source);
