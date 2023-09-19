@@ -1,11 +1,11 @@
 //Average MPG per Federal Highway Administration
-const carGasMPG = 24.2;
-const vanGasMPG = 17.5;
-const gallonPrice = 3.58;
+const carGasMPG = 22.2;
+const vanGasMPG = 15.5;
+const gallonPrice = 3.88;
 
 const milesPerChargeCar = 405;
 const milesPerChargeVan = 348;
-const chargePrice = 14;
+const chargePrice = 18;
 
 //Average CO2 emissions in kg per mile according to 8billiontrees.com
 const carEmissionsPerMile = .404;
