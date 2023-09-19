@@ -11,7 +11,7 @@ body{
     justify-content: center;
     margin: 0;
     height: 100vh;
-
+}
 #mapContainer{
     position: fixed;
     top: 0;
@@ -21,7 +21,6 @@ body{
     z-index: 0;
 }
 
-}
 .sidenav {
     width: 100%;
     height: 100%; /* Full-height: remove this if you want "auto" height */

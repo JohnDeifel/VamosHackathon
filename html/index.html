@@ -10,103 +10,106 @@
       <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
       <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
       <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+      <script src="../javascript/route.js"></script>
+      <script src="../javascript/fuelPricing.js"></script> 
+      <script src="../javascript/updateUI.js"></script>
       <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+      <link rel="stylesheet" href="../css/style.css">
 </head>
 
+
+
+  
 <body>
+  <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
 
-<div class="sidenav">
-<a href="#" style="text-align: center;">Carbon Footprint</a>
+  <div class="sidenav" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;">
+    <a href="#" style="text-align: center;">Carbon Footprint</a>
 
 
-<!-- Page content -->
-<div class="main">
-    <div class="container">
-        <div class="button">
-            <button class="drop">Route Information</button>
-            <div class="dropdown-content">
-                <p id="routeInfo">Information</p>
+  <!-- Page content -->
+    <div class="sidebar">
+      <div class="container">
+            <div class="button">
+                <button class="drop">Most Recent Route Information</button>
+                <div class="dropdown-content">
+                    <p id="routeInfo">Please select your first route.</p>
+                </div>
             </div>
-        </div>
-        <div class="button">
-            <button class="drop">Enter Vehicle Information</button>
-            <div class="dropdown-content">
-                <label for="cars">EV Vehicle Size:</label>
-                <select name="cars" id="evType">
-                  <option value="Car">Car</option>
-                  <option value="Van">SUV/Sedan</option>
-                </select>
+            <div class="button">
+                <button class="drop">Enter Vehicle Information</button>
+                <div class="dropdown-content">
+                    <label for="cars">EV Vehicle Size:</label>
+                    <select name="cars" id="evType">
+                      <option value="Car">Car</option>
+                      <option value="Van">SUV/Sedan</option>
+                    </select>
 
-                <label for="cars">Gas Vehicle Size:</label>
-                <select name="cars" id="gasType">
-                    <option value="Car">Car</option>
-                    <option value="Van">SUV/Sedan</option>
-                </select>
-                <button id="submit" type="submit">Submit</button>
-                <script>
-                    function handleVehicleInfo() {
-                        //get values from dropdown id's 'evType' and 'gasType' and store them in index.html
-                        var dropdown = document.getElementById("evType");
-                        var newType = dropdown.value;
-                        localStorage.setItem("evType", newType);
+                    <label for="cars">Gas Vehicle Size:</label>
+                    <select name="cars" id="gasType">
+                        <option value="Car">Car</option>
+                        <option value="Van">SUV/Sedan</option>
+                    </select>
+                    <button id="submit" type="submit">Submit</button>
+                    <script>
+                        function handleVehicleInfo() {
+                            //get values from dropdown id's 'evType' and 'gasType' and store them in index.html
+                            var dropdown = document.getElementById("evType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("evType", newType);
 
-                        var dropdown = document.getElementById("gasType");
-                        var newType = dropdown.value;
-                        localStorage.setItem("gasType", newType);
-                    }
-                    // Add an event listener to the button
-                    document.getElementById("submit").addEventListener("click", handleVehicleInfo);
-                </script>
+                            var dropdown = document.getElementById("gasType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("gasType", newType);
+                        }
+                        // Add an event listener to the button
+                        document.getElementById("submit").addEventListener("click", handleVehicleInfo);
+                    </script>
+                </div>
             </div>
-        </div>
-        <div class="button">
-            <button class="drop">Emissions Comparison</button>
-            <div class="dropdown-content">
-                <p>CO2 Used by EV: </p>
-                <p>CO2 Used by GV: </p>
+            <div class="button">
+                <button class="drop">Total Emissions Comparison</button>
+                <div class="dropdown-content">
+                    <p id="evCO2Total">CO2 Used by EV (kg): 0.00</p>
+                    <p id="gasCO2Total">CO2 Used by GV (kg): 0.00</p>
+                </div>
             </div>
-        </div>
-        <div class="button">
-            <button class="drop">All Trips</button>
-            <div class="dropdown-content">
-                <p>Information</p>
+            <div class="button">
+                <button class="drop">Total Cost Comparison</button>
+                <div class="dropdown-content">
+                  <p id="evChargeTotal">USD Spent on Charging: 0.00</p>
+                  <p id="gasTotal">USD Spent on Gas: 0.00</p>
+                </div>
             </div>
-        </div>
-        <div class="button">
-            <button id="resetButton">Reset Route</button>
-        </div>
-        <script src="../javascript/updateUI.js"></script>
+            <div class="button">
+                <button id="resetButton">Reset Routes</button>
+            </div>
+      </div>
     </div>
-
+  </div>
+</body>
 
 <script>
-    // Get all dropdown buttons
-    var dropdownButtons = document.querySelectorAll(".drop");
+  var dropdownButtons = document.querySelectorAll(".drop");
 
-    // Add click event listeners to toggle content
-    dropdownButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
-    });
+  dropdownButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+              content.style.display = "none";
+          } else {
+              content.style.display = "block";
+          }
+      });
+  });
 
-    const resetButton = document.getElementById('resetButton');
-    resetButton.addEventListener('click', function(){
-        window.parent.postMessage('reset', '*');
-    });
+  const resetButton = document.getElementById('resetButton');
+  resetButton.addEventListener('click', function(){
+      window.parent.postMessage('reset', '*');
+  });
     
 
-</script>
 
-</body>
-<!-- Step 4: Create a div for the Map -->
-<div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
-<script>
   localStorage.setItem("evType", "Car");
   localStorage.setItem("gasType", "Car");
   localStorage.setItem("allRoutes", new Array());
@@ -114,59 +117,57 @@
   localStorage.setItem("totalEVCost", 0);
   localStorage.setItem("totalGasEmissions", 0);
   localStorage.setItem("totalEVEmissions", 0);
-</script>
-
-<script src="../javascript/route.js"></script>
-<script src="../javascript/fuelPricing.js"></script>
-<script>
-      let source = -1;
-      let dest = -1;
-      let evRouteDist = 0;
-      let routeLine = -1;
-      updateUI();
 
 
-      window.addEventListener('message', function(event){
-        if(event.data === 'reset'){
-            reset();
-        }
-      });
+
+  let source = -1;
+  let dest = -1;
+  let evRouteDist = 0;
+  let routeLine = -1;
 
 
-      window.addEventListener('message', function(event){
-        if(event.data === 'reset'){
-            reset();
-        }
-      });
 
-      function toMMSS(duration) {
-        return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
-      }
+  window.addEventListener('message', function(event){
+    if(event.data === 'reset'){
+        reset();
+    }
+  });
 
-      /**
-       * Resets the stored routes within the application.
-       */
-      function reset() {
-        localStorage.setItem("evType", "Car");
-        localStorage.setItem("gasType", "Car");
-        localStorage.setItem("totalGasCost", 0);
-        localStorage.setItem("totalEVCost", 0);
-        localStorage.setItem("totalGasEmissions", 0);
-        localStorage.setItem("totalEVEmissions", 0);
-        source = -1;
-        dest = -1;
-        routeline = -1;
-        evRouteDist = 0;
 
-        //Clear the map
-        mapObjects = map.getObjects();
-        for (idx in mapObjects) {
-          map.removeObject(mapObjects[idx]);
-        }
+  window.addEventListener('message', function(event){
+    if(event.data === 'reset'){
+        reset();
+    }
+  });
 
-        //Update Display
-        updateUI();
-      }
+  function toMMSS(duration) {
+    return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
+  }
+
+  /**
+    * Resets the stored routes within the application.
+    */
+  function reset() {
+    localStorage.setItem("evType", "Car");
+    localStorage.setItem("gasType", "Car");
+    localStorage.setItem("totalGasCost", 0);
+    localStorage.setItem("totalEVCost", 0);
+    localStorage.setItem("totalGasEmissions", 0);
+    localStorage.setItem("totalEVEmissions", 0);
+    source = -1;
+    dest = -1;
+    routeline = -1;
+    evRouteDist = 0;
+
+    //Clear the map
+    mapObjects = map.getObjects();
+    for (idx in mapObjects) {
+      map.removeObject(mapObjects[idx]);
+    }
+
+    //Update Display
+    resetUI();
+  }
 
       /**
       * Creates a series of H.map.Marker points from the route and adds them to the map.
@@ -238,8 +239,8 @@
         costs = calculateRouteCosts(evType, gasType, evRouteDist);
         var evCost = costs[0];
         var gasCost = costs[1];
-        var prevEV = localStorage.getItem("totalEVCost");
-        var prevGas = localStorage.getItem("totalGasCost")
+        var prevEV = parseFloat(localStorage.getItem("totalEVCost"));
+        var prevGas = parseFloat(localStorage.getItem("totalGasCost"));
 
         localStorage.setItem("totalGasCost", prevGas + gasCost);
         localStorage.setItem("totalEVCost", evCost + prevEV);
@@ -248,8 +249,8 @@
         var evEmissions = emissions[0];
         var gasEmissions = emissions[1];
 
-        var prevEV = localStorage.getItem("totalEVEmissions");
-        var prevGas = localStorage.getItem("totalGasEmissions")
+        var prevEV = parseFloat(localStorage.getItem("totalEVEmissions"));
+        var prevGas = parseFloat(localStorage.getItem("totalGasEmissions"));
 
         localStorage.setItem("totalGasEmissions", prevGas + gasEmissions);
         localStorage.setItem("totalEVEmissions", evEmissions + prevEV);
@@ -258,7 +259,7 @@
 
 
         //Update UI
-
+        updateUI(currRoute);
 
 
         //Reset Route Settings
@@ -425,5 +426,4 @@
 
     </script>
     
-</body>
 </html>
