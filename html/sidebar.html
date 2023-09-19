@@ -111,7 +111,13 @@
                     <script>
                         function handleVehicleInfo() {
                             //get values from dropdown id's 'evType' and 'gasType' and store them in index.html
-                            alert("clicked");
+                            var dropdown = document.getElementById("evType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("evType", newType);
+
+                            var dropdown = document.getElementById("gasType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("gasType", newType);
                         }
                         // Add an event listener to the button
                         document.getElementById("submit").addEventListener("click", handleVehicleInfo);
