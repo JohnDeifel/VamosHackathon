@@ -1,1 +1,106 @@
 
+.mapBody{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100vh;
+
+#mapContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+}
+.sidenav {
+    width: 100%;
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    right: 0;
+    background-color: white; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+/* The navigation menu links */
+.sidenav a {
+    text-align: center; /* Center text horizontally */
+    text-decoration: none;
+    font-size: 25px;
+    color: #66FFFF;
+    display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Style page content */
+.main {
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style dropdown content */
+.dropdown-content {
+    display: none;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-width: 200px; /* Set a fixed width for dropdown content */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content p {
+    margin: 0;
+}
+
+/* Style input elements inside dropdown */
+.dropdown-content input, .dropdown-content select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.drop{
+    width: 100%;
+}
+
+#resetButton{
+    width: 100%;
+}
+
+.button button {
+    width: 100%;
+    background-color: #66FFFF; /* Change the background color */
+    border: none; /* Remove button border */
+    color: black; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth background color transition */
+    padding: 10px 20px; /* Add padding for a better appearance */
+}
+
+/* Remove left and right borders for all buttons except the first one */
+.button:not(:first-child) button {
+    border-bottom: black;
+    border-left: none;
+    border-right: none;
+}
+
+.button button:hover {
+    background-color: #4CAF50; /* Change background color on hover */
+    color: white; /* Text color on hover */
+}
+
