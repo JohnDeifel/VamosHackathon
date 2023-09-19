@@ -14,6 +14,96 @@
 </head>
 
 <body>
+
+<div class="sidenav">
+<a href="#" style="text-align: center;">Carbon Footprint</a>
+
+
+<!-- Page content -->
+<div class="main">
+    <div class="container">
+        <div class="button">
+            <button class="drop">Route Information</button>
+            <div class="dropdown-content">
+                <p id="routeInfo">Information</p>
+            </div>
+        </div>
+        <div class="button">
+            <button class="drop">Enter Vehicle Information</button>
+            <div class="dropdown-content">
+                <label for="cars">EV Vehicle Size:</label>
+                <select name="cars" id="evType">
+                  <option value="Car">Car</option>
+                  <option value="Van">SUV/Sedan</option>
+                </select>
+
+                <label for="cars">Gas Vehicle Size:</label>
+                <select name="cars" id="gasType">
+                    <option value="Car">Car</option>
+                    <option value="Van">SUV/Sedan</option>
+                </select>
+                <button id="submit" type="submit">Submit</button>
+                <script>
+                    function handleVehicleInfo() {
+                        //get values from dropdown id's 'evType' and 'gasType' and store them in index.html
+                        var dropdown = document.getElementById("evType");
+                        var newType = dropdown.value;
+                        localStorage.setItem("evType", newType);
+
+                        var dropdown = document.getElementById("gasType");
+                        var newType = dropdown.value;
+                        localStorage.setItem("gasType", newType);
+                    }
+                    // Add an event listener to the button
+                    document.getElementById("submit").addEventListener("click", handleVehicleInfo);
+                </script>
+            </div>
+        </div>
+        <div class="button">
+            <button class="drop">Emissions Comparison</button>
+            <div class="dropdown-content">
+                <p>CO2 Used by EV: </p>
+                <p>CO2 Used by GV: </p>
+            </div>
+        </div>
+        <div class="button">
+            <button class="drop">All Trips</button>
+            <div class="dropdown-content">
+                <p>Information</p>
+            </div>
+        </div>
+        <div class="button">
+            <button id="resetButton">Reset Route</button>
+        </div>
+        <script src="../javascript/updateUI.js"></script>
+    </div>
+
+
+<script>
+    // Get all dropdown buttons
+    var dropdownButtons = document.querySelectorAll(".drop");
+
+    // Add click event listeners to toggle content
+    dropdownButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    });
+
+    const resetButton = document.getElementById('resetButton');
+    resetButton.addEventListener('click', function(){
+        window.parent.postMessage('reset', '*');
+    });
+    
+
+</script>
+
+</body>
 <!-- Step 4: Create a div for the Map -->
 <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
 <script>
@@ -25,10 +115,9 @@
   localStorage.setItem("totalGasEmissions", 0);
   localStorage.setItem("totalEVEmissions", 0);
 </script>
-<iframe id = "sidebar" src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
+
 <script src="../javascript/route.js"></script>
 <script src="../javascript/fuelPricing.js"></script>
-<script src="../javascript/updateUI.js"></script>
 <script>
       let source = -1;
       let dest = -1;
@@ -76,6 +165,7 @@
         }
 
         //Update Display
+        updateUI();
       }
 
       /**
