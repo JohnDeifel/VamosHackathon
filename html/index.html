@@ -16,6 +16,7 @@
 <body>
 <!-- Step 4: Create a div for the Map -->
 <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
+<!-- Add a reset button -->
 
 <iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
 <script src="../javascript/route.js"></script>
@@ -28,6 +29,13 @@
       let routeLine = -1;
       let evType = undefined;
       let gasType = undefined;
+
+
+      window.addEventListener('message', function(event){
+        if(event.data === 'reset'){
+            reset();
+        }
+      });
 
       function toMMSS(duration) {
         return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
