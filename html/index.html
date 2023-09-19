@@ -28,11 +28,13 @@
 <iframe id = "sidebar" src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
 <script src="../javascript/route.js"></script>
 <script src="../javascript/fuelPricing.js"></script>
+<script src="../javascript/updateUI.js"></script>
 <script>
       let source = -1;
       let dest = -1;
       let evRouteDist = 0;
       let routeLine = -1;
+      updateUI();
 
 
       window.addEventListener('message', function(event){
