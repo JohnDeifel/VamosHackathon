@@ -16,19 +16,30 @@
 <body>
 <!-- Step 4: Create a div for the Map -->
 <div id="mapContainer" style="width: 75vw; height: 100vw; align-self: right; text-align: center;"></div>
-<!-- Add a reset button -->
-
-<iframe src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
+<script>
+  localStorage.setItem("evType", "Car");
+  localStorage.setItem("gasType", "Car");
+  localStorage.setItem("allRoutes", new Array());
+  localStorage.setItem("totalGasCost", 0);
+  localStorage.setItem("totalEVCost", 0);
+  localStorage.setItem("totalGasEmissions", 0);
+  localStorage.setItem("totalEVEmissions", 0);
+</script>
+<iframe id = "sidebar" src="sidebar.html" style="width: 25vw; height: 100vh; position: fixed; right: 0; top: 0; border: none;"></iframe>
 <script src="../javascript/route.js"></script>
 <script src="../javascript/fuelPricing.js"></script>
 <script>
       let source = -1;
       let dest = -1;
       let evRouteDist = 0;
-      let allRoutes = [];
       let routeLine = -1;
-      let evType = undefined;
-      let gasType = undefined;
+
+
+      window.addEventListener('message', function(event){
+        if(event.data === 'reset'){
+            reset();
+        }
+      });
 
 
       window.addEventListener('message', function(event){
@@ -45,13 +56,16 @@
        * Resets the stored routes within the application.
        */
       function reset() {
-        allRoutes = [];
+        localStorage.setItem("evType", "Car");
+        localStorage.setItem("gasType", "Car");
+        localStorage.setItem("totalGasCost", 0);
+        localStorage.setItem("totalEVCost", 0);
+        localStorage.setItem("totalGasEmissions", 0);
+        localStorage.setItem("totalEVEmissions", 0);
         source = -1;
         dest = -1;
         routeline = -1;
         evRouteDist = 0;
-        evType = undefined;
-        gasType = undefined;
 
         //Clear the map
         mapObjects = map.getObjects();
@@ -126,25 +140,40 @@
 
       function logRoute() {
         //Route has been completed, add source, dest to routes, figure out emissions, and figure out gas costs
-        costs = calculateRouteCosts("Car", "Car", evRouteDist);
+        var evType = localStorage.getItem("evType");
+        var gasType = localStorage.getItem("gasType");
+
+        costs = calculateRouteCosts(evType, gasType, evRouteDist);
         var evCost = costs[0];
         var gasCost = costs[1];
+        var prevEV = localStorage.getItem("totalEVCost");
+        var prevGas = localStorage.getItem("totalGasCost")
+
+        localStorage.setItem("totalGasCost", prevGas + gasCost);
+        localStorage.setItem("totalEVCost", evCost + prevEV);
         
-        emissions = calculateEmissions("Car", "Car", evRouteDist);
+        emissions = calculateEmissions(evType, gasType, evRouteDist);
         var evEmissions = emissions[0];
         var gasEmissions = emissions[1];
-      
+
+        var prevEV = localStorage.getItem("totalEVEmissions");
+        var prevGas = localStorage.getItem("totalGasEmissions")
+
+        localStorage.setItem("totalGasEmissions", prevGas + gasEmissions);
+        localStorage.setItem("totalEVEmissions", evEmissions + prevEV);
 
         currRoute = new Route(source, dest, routeLine, evRouteDist, evCost, gasCost, evEmissions, gasEmissions);
 
-        allRoutes.push(currRoute);
+
+        //Update UI
+
+
 
         //Reset Route Settings
         source = -1;
         dest = -1;
         routeLine = -1;
         evRouteDist = 0;
-        reset();
       }
 
 
@@ -248,6 +277,11 @@
             createEVRoute(map);
           }
         });
+      }
+
+      //Handles when user specifies the size of the vehicle given
+      function handleVehicleTypes() {
+        alert("here");
       }
 
       // Step 5: Create an Instance of the H.service.Platform Object 

@@ -25,23 +25,32 @@
             <div class="button">
                 <button class="drop">Emissions Information</button>
                 <div class="dropdown-content">
-                    <label for="cars">Vehicle Size:</label>
-                    <select name="cars" id="cars">
-                      <option value="car">Car</option>
-                      <option value="truck">SUV/Sedan</option>
+                    <label for="cars">EV Vehicle Size:</label>
+                    <select name="cars" id="evType">
+                      <option value="Car">Car</option>
+                      <option value="Van">SUV/Sedan</option>
                     </select>
-                    <input type="text" id="Name" name="Name" placeholder="EV Make">
-                    <input type="text" id="Name" name="Name" placeholder="EV Model">
-                    <input type="text" id="Name" name="Name" placeholder="EV Year">
 
-                    <label for="cars">Vehicle Size:</label>
-                    <select name="cars" id="cars">
-                        <option value="car">Car</option>
-                        <option value="truck">SUV/Sedan</option>
+                    <label for="cars">Gas Vehicle Size:</label>
+                    <select name="cars" id="gasType">
+                        <option value="Car">Car</option>
+                        <option value="Van">SUV/Sedan</option>
                     </select>
-                    <input type="text" id="Name" name="Name" placeholder="Gas Vehicle Make">
-                    <input type="text" id="Name" name="Name" placeholder="Gas Vehicle Model">
-                    <input type="text" id="Name" name="Name" placeholder="Gas Vehicle Year">
+                    <button id="submit" type="submit">Submit</button>
+                    <script>
+                        function handleVehicleInfo() {
+                            //get values from dropdown id's 'evType' and 'gasType' and store them in index.html
+                            var dropdown = document.getElementById("evType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("evType", newType);
+
+                            var dropdown = document.getElementById("gasType");
+                            var newType = dropdown.value;
+                            localStorage.setItem("gasType", newType);
+                        }
+                        // Add an event listener to the button
+                        document.getElementById("submit").addEventListener("click", handleVehicleInfo);
+                    </script>
                 </div>
             </div>
             <div class="button">
